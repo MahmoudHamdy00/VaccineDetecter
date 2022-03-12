@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/VaccineDetecter-Backend/bin/Debug/net6.0
+/VaccineDetecter-Backend/obj
+/VaccineDetecter-Backend/.vs
