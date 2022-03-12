@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>VaccineDetecter_Backend</RootNamespace>
+    <UserSecretsId>81d963d6-ea5e-44b4-a8e8-dbfd750c4034</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
