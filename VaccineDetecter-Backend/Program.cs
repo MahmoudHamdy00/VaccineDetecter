@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using VaccineDetecter_Backend.Data;
 using VaccineDetecter_Backend.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,11 +11,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 //
+builder.Services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 var myEmail = builder.Configuration["email"];
 var myPassword = builder.Configuration["emailpassword"];
 var SMTPServerAddress = builder.Configuration["SMTPServerAddress"];
 var mailSubmissionPort = Convert.ToInt32(builder.Configuration["mailSubmissionPort"]);
 builder.Services.AddTransient<IEmailSenderService, EmailSenderService>(op => new EmailSenderService(myEmail, myPassword, SMTPServerAddress, mailSubmissionPort));
+builder.Services.AddTransient<ISavingDataService, SavingDataService>();
 //
 var app = builder.Build();
 
