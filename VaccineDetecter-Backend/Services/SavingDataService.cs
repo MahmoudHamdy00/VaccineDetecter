@@ -13,20 +13,20 @@ namespace VaccineDetecter_Backend.Services
         public async Task<bool> SaveData(DataDTO data) {
             try {
                 var person = new Person() {
-                    NationalId = data.NationalId,
-                    Name = data.Name,
-                    Age = data.Age,
-                    Gender = data.Gender,
-                    Email = data.Email,
-                    MobileNumber = data.MobileNumber,
+                    NationalId = data.person.NationalId,
+                    Name = data.person.Name,
+                    Age = data.person.Age,
+                    Gender = data.person.Gender,
+                    Email = data.person.Email,
+                    MobileNumber = data.person.MobileNumber,
                 };
-                var nationalId =await AddPerson(person);
+                var nationalId = await AddPerson(person);
 
                 var test = new MedicalTest() {
-                    WhiteBloodCell = data.WhiteBloodCell,
-                    RedBloodCell = data.RedBloodCell,
-                    PersonId = person.NationalId,
-                    TestDate = data.TestDate
+                    WhiteBloodCell = data.Test.WhiteBloodCell,
+                    RedBloodCell = data.Test.RedBloodCell,
+                    TestDate = data.Test.TestDate,
+                    PersonId = person.NationalId
                 };
                 await _applicationDbContext.Tests.AddAsync(test);
                 await _applicationDbContext.SaveChangesAsync();
@@ -42,8 +42,9 @@ namespace VaccineDetecter_Backend.Services
                 if (res == null) {
                     await _applicationDbContext.Persons.AddAsync(person);
                     await _applicationDbContext.SaveChangesAsync();
+                    return person.NationalId;
                 }
-                return person.NationalId;
+                return res.NationalId;
             }
             catch (Exception ex) {
                 return "-1";
