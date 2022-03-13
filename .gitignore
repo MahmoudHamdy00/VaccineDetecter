@@ -5,3 +5,28 @@
 /VaccineDetecter-Backend/bin/Debug/net6.0
 /VaccineDetecter-Backend/obj
 /VaccineDetecter-Backend/.vs
+
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+
+/VaccineDetecter-Frontend/node_modules
+/VaccineDetecter-Frontend/.pnp
+/VaccineDetecter-Frontend/.pnp.js
+
+# testing
+/VaccineDetecter-Frontend/coverage
+
+# production
+/VaccineDetecter-Frontend/build
+
+# misc
+/VaccineDetecter-Frontend/.DS_Store
+/VaccineDetecter-Frontend/.env.local
+/VaccineDetecter-Frontend/.env.development.local
+/VaccineDetecter-Frontend/.env.test.local
+/VaccineDetecter-Frontend/.env.production.local
+
+/VaccineDetecter-Frontend/npm-debug.log*
+/VaccineDetecter-Frontend/yarn-debug.log*
+/VaccineDetecter-Frontend/yarn-error.log*
