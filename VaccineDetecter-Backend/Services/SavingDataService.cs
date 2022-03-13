@@ -10,7 +10,7 @@ namespace VaccineDetecter_Backend.Services
         public SavingDataService(ApplicationDbContext applicationDbContext) {
             _applicationDbContext = applicationDbContext;
         }
-        public async Task<Response> SaveData(DataDTO data) {
+        public Response SaveData(DataDTO data) {
             var ret = new Response();
             try {
                 var person = new Person() {
@@ -18,7 +18,7 @@ namespace VaccineDetecter_Backend.Services
                     Gender = data.person.Gender,
                     Email = data.person.Email,
                 };
-                var AddPersonResult = await AddPerson(person);
+                var AddPersonResult = AddPerson(person);
                 if (!AddPersonResult.Succeeded) {
                     ret.Succeeded = false;
                     ret.Errors = AddPersonResult.Errors;
@@ -31,8 +31,8 @@ namespace VaccineDetecter_Backend.Services
                     TestDate = data.Test.TestDate,
                     PersonId = PersonId
                 };
-                await _applicationDbContext.Tests.AddAsync(test);
-                await _applicationDbContext.SaveChangesAsync();
+                _applicationDbContext.Tests.Add(test);
+                _applicationDbContext.SaveChanges();
                 return ret;
             }
             catch (Exception ex) {
@@ -44,16 +44,17 @@ namespace VaccineDetecter_Backend.Services
                 return ret;
             }
         }
-        public async Task<Response> AddPerson(Person person) {
+        public Response AddPerson(Person person) {
             var ret = new Response();
             try {
-                var res = await _applicationDbContext.Persons.FindAsync(person.Email);
+                var res = _applicationDbContext.Persons.Find(person.Email);
                 if (res == null) {
-                    await _applicationDbContext.Persons.AddAsync(person);
-                    await _applicationDbContext.SaveChangesAsync();
+                    _applicationDbContext.Persons.Add(person);
+                    _applicationDbContext.SaveChanges();
                     ret.Data = person.Email;
                 }
-                ret.Data = res.Email;
+                else
+                    ret.Data = res.Email;
                 return ret;
             }
             catch (Exception ex) {
