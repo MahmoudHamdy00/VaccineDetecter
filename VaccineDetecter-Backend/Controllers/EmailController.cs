@@ -13,10 +13,10 @@ namespace VaccineDetecter_Backend.Controllers
         public EmailController(IEmailSenderService emailSenderService) {
             _emailSenderService = emailSenderService;
         }
-        [HttpPost("sendMail")]
-        public async Task<IActionResult> SignUp([FromBody] Message message) {
-            _emailSenderService.SendEmail(message.email, message.MessageSubject, message.MessageBody);
-            return Ok();
-        }
+        /*  [HttpPost("sendMail")]
+          public async Task<IActionResult> SignUp([FromBody] Message message) {
+              _emailSenderService.SendEmail(message.email, message.MessageSubject, message.MessageBody);
+              return Ok();
+          }*/
     }
 }

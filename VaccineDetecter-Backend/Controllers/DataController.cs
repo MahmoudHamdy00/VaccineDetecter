@@ -10,15 +10,18 @@ namespace VaccineDetecter_Backend.Controllers
     public class DataController : ControllerBase
     {
         private readonly ISavingDataService _savingDataService;
+        private readonly IEmailSenderService _emailSenderService;
 
-        public DataController(ISavingDataService savingDataService) {
+        public DataController(ISavingDataService savingDataService, IEmailSenderService emailSenderService) {
             _savingDataService = savingDataService;
+            _emailSenderService = emailSenderService;
         }
         [HttpPost("Save")]
         public async Task<IActionResult> Save([FromBody] DataDTO data) {
             var res = await _savingDataService.SaveData(data);
-            if (res.Succeeded) {
-                return Ok(res.Succeeded);
+            if (res) {
+                _emailSenderService.SendEmail(data.person.Email,data.Message.MessageSubject,data.Message.MessageBody);
+                return Ok();
             }
             else return BadRequest(res.Errors);
         }
