@@ -29,7 +29,7 @@ function App() {
   const [userrbc, setUserrbc] = useState("")
   const [userGender, setUserGender] = useState("")
   function backend(event) {
-    event.preventDefault()
+    //event.preventDefault()
     if (userEmail   ) {
       fetch('https://vaccinedetecter-backend.azurewebsites.net/api/Data/Save', {
         method: 'POST',
