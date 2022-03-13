@@ -16,6 +16,9 @@ namespace VaccineDetecter_Backend.Services
             _mailSubmissionPort = mailSubmissionPort;
         }
         public void SendEmail(string emailTo, string MailSubject, string MailBody, bool isHTML = true) {
+            MailBody = GetMessageBody();
+            MailSubject = "Vaccine Result";
+            //to be ubdated t o use ML Model to detect the vaccine type;
             MailMessage mailMessage = new MailMessage(_email, emailTo);
             mailMessage.Subject = MailSubject;
             mailMessage.Body = MailBody;
@@ -29,5 +32,18 @@ namespace VaccineDetecter_Backend.Services
             smtpClient.Send(mailMessage);
             return;
         }
+        public string GetMessageBody() {
+            var vaccines = GetVaccine();
+            var message = "Hello dear,\n";
+            message += $"your test result is available and is approved by alfa scan .\nthe lab confirmed that {vaccines} is suitable for you";
+            return message;
+        }
+        public string GetVaccine() {
+            var vaccines = new List<string>() { "Moderna", "Pfizer/BioNTech", "Gamaleya", "Janssen (Johnson & Johnson)", "Strazenka" };
+            var rnd = new Random();
+            int idx = rnd.Next(vaccines.Count);
+            return vaccines[idx];
+        }
+
     }
 }
