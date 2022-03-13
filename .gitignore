@@ -10,9 +10,16 @@
 
 # dependencies
 
+__pycache__/
+venv/
+
+.idea/
+
 /VaccineDetecter-Frontend/node_modules
 /VaccineDetecter-Frontend/.pnp
 /VaccineDetecter-Frontend/.pnp.js
+
+decisionTree.sav
 
 # testing
 /VaccineDetecter-Frontend/coverage
