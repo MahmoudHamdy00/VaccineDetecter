@@ -29,12 +29,12 @@ function App() {
   const [userrbc, setUserrbc] = useState("")
   const [userGender, setUserGender] = useState("")
   function backend(event) {
-    //event.preventDefault()
-    if (userEmail   ) {
+    event.preventDefault()
+    if (userEmail && userAge && userrbc && userwbc && userGender) {
       fetch('https://vaccinedetecter-backend.azurewebsites.net/api/Data/Save', {
         method: 'POST',
         // We convert the React state to SON and send it as the POST body
-        body:  JSON.stringify({
+        body: JSON.stringify({
           "person": {
             "nationalId": "string",
             "age": userAge,
@@ -51,7 +51,7 @@ function App() {
             "messageBody": "last test"
           }
         }),
-        
+
 
         headers: {
           "Access-Control-Allow-Origin": "*",
@@ -60,29 +60,32 @@ function App() {
 
 
       })
-      .then(response => (response.text().then(text => {
-        let data;
-        try {
-          data = text && JSON.parse(text);
-        } catch (ex) {
-          return Promise.reject(text);
-        }
-        if (!response.ok) {
-          const error = (data && data.message) || response.statusText;
-          return Promise.reject(error);
-        }
-        return data || '';
-      })))
-      .then(result => alert('your request is submitted '))
-      .catch(error => console.log('error', error));
+        .then(response => (response.text().then(text => {
+          let data;
+          try {
+            data = text && JSON.parse(text);
+          } catch (ex) {
+            return Promise.reject(text);
+          }
+          if (!response.ok) {
+            const error = (data && data.message) || response.statusText;
+            // console.log(response);
+            return Promise.reject(error);
+          }
+          return data || '';
+        })))
+        .then(result => alert('your request is submitted successfuly ,we will sent you a mail with your result soon'))
+        .catch(error => console.log('error', error));
 
+    } else {
+      alert('please enter a valid data ')
     }
     // fetch('https://vaccinedetecter-backend.azurewebsites.net/api/Email/sendMail')
     //       .then(response => response.json())
     //         .then("ok");
-    
 
-    
+
+
   }
   function changeEmail(event) {
     setUserEmail(event.target.value)
@@ -97,6 +100,7 @@ function App() {
     setUserrbc(event.target.value)
   }
   function changeGender(event) {
+    console.log(event.target.value)
     setUserGender(event.target.value)
   }
 
@@ -140,10 +144,10 @@ function App() {
           <input type="email" id="inputEmail" class="form-control" onBlur={changeEmail} />
 
           <label for="inputAge" class="form-label">Age :</label>
-          <input type="text" id="inputAge" class="form-control" onBlur={changeAge}/>
+          <input type="text" id="inputAge" class="form-control" onBlur={changeAge} />
           <div class="input-group mb-3" style={{ marginTop: '50px' }}>
             <label class="input-group-text" for="inputGroupSelect01">Gender</label>
-            <select class="form-select" id="inputGroupSelect01" onSelect={changeGender}>
+            <select class="form-select" id="inputGroupSelect01" onBlur={changeGender}>
               <option selected>Choose...</option>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
