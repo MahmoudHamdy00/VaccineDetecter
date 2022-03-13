@@ -27,7 +27,7 @@ namespace VaccineDetecter_Backend.Services
                     ret.Errors = AddPersonResult.Errors;
                     return ret;
                 }
-                var PersonNationalId = AddPersonResult.Data.ToString() ;
+                var PersonNationalId = AddPersonResult.Data.ToString();
                 var test = new MedicalTest() {
                     WhiteBloodCell = data.Test.WhiteBloodCell,
                     RedBloodCell = data.Test.RedBloodCell,
@@ -40,7 +40,10 @@ namespace VaccineDetecter_Backend.Services
             }
             catch (Exception ex) {
                 ret.Succeeded = false;
-                ret.Errors.Add(new Error() { Code = ex.Message, Description = ex.InnerException.Message });
+                var err = new Error() { Code = ex.Message };
+                if (ex.InnerException != null)
+                    err.Description = ex.InnerException.Message;
+                ret.Errors.Add(err);
                 return ret;
             }
         }
@@ -58,7 +61,10 @@ namespace VaccineDetecter_Backend.Services
             }
             catch (Exception ex) {
                 ret.Succeeded = false;
-                ret.Errors.Add(new Error() { Code = ex.Message, Description = ex.InnerException.Message });
+                var err = new Error() { Code = ex.Message };
+                if (ex.InnerException != null)
+                    err.Description = ex.InnerException.Message;
+                ret.Errors.Add(err);
                 return ret;
             }
         }
