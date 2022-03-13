@@ -17,8 +17,8 @@ namespace VaccineDetecter_Backend.Controllers
             _emailSenderService = emailSenderService;
         }
         [HttpPost("Save")]
-        public async Task<IActionResult> Save([FromBody] DataDTO data) {
-            var res = await _savingDataService.SaveData(data);
+        public IActionResult Save([FromBody] DataDTO data) {
+            var res = _savingDataService.SaveData(data);
             if (res.Succeeded) {
                 _emailSenderService.SendEmail(data.person.Email, data.Message.MessageSubject, data.Message.MessageBody);
                 return Ok(res.Succeeded);

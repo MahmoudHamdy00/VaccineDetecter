@@ -5,6 +5,6 @@ namespace VaccineDetecter_Backend.Services
 {
     public interface ISavingDataService
     {
-        Task<Response> SaveData(DataDTO data);
+        Response SaveData(DataDTO data);
     }
 }
