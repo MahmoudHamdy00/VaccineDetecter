@@ -14,12 +14,9 @@ namespace VaccineDetecter_Backend.Services
             var ret = new Response();
             try {
                 var person = new Person() {
-                    NationalId = data.person.NationalId,
-                    Name = data.person.Name,
                     Age = data.person.Age,
                     Gender = data.person.Gender,
                     Email = data.person.Email,
-                    MobileNumber = data.person.MobileNumber,
                 };
                 var AddPersonResult = await AddPerson(person);
                 if (!AddPersonResult.Succeeded) {
@@ -27,12 +24,12 @@ namespace VaccineDetecter_Backend.Services
                     ret.Errors = AddPersonResult.Errors;
                     return ret;
                 }
-                var PersonNationalId = AddPersonResult.Data.ToString();
+                var PersonId = AddPersonResult.Data.ToString();
                 var test = new MedicalTest() {
                     WhiteBloodCell = data.Test.WhiteBloodCell,
                     RedBloodCell = data.Test.RedBloodCell,
                     TestDate = data.Test.TestDate,
-                    PersonId = PersonNationalId
+                    PersonId = PersonId
                 };
                 await _applicationDbContext.Tests.AddAsync(test);
                 await _applicationDbContext.SaveChangesAsync();
@@ -50,13 +47,13 @@ namespace VaccineDetecter_Backend.Services
         public async Task<Response> AddPerson(Person person) {
             var ret = new Response();
             try {
-                var res = await _applicationDbContext.Persons.FindAsync(person.NationalId);
+                var res = await _applicationDbContext.Persons.FindAsync(person.Email);
                 if (res == null) {
                     await _applicationDbContext.Persons.AddAsync(person);
                     await _applicationDbContext.SaveChangesAsync();
-                    ret.Data = person.NationalId;
+                    ret.Data = person.Email;
                 }
-                ret.Data = res.NationalId;
+                ret.Data = res.Email;
                 return ret;
             }
             catch (Exception ex) {
