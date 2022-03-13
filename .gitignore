@@ -30,3 +30,4 @@
 /VaccineDetecter-Frontend/npm-debug.log*
 /VaccineDetecter-Frontend/yarn-debug.log*
 /VaccineDetecter-Frontend/yarn-error.log*
+/VaccineDetecter-Backend/bin/Release/net6.0
