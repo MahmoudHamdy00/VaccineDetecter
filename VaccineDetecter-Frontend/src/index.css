@@ -14,6 +14,17 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.headerStyle1
+{
+  margin-left:20px;
+  color:purple;
+}
+.headerStyle2
+{
+  margin-left:20px;
+  color:crimson;
+  font-style:oblique;
+}
 img.sticky {
   position: -webkit-sticky;
   position: sticky;
@@ -42,4 +53,6 @@ form.inputs {
   background-color: #a34c9c;
   color: rgba(255,255,255,0.8);
 }
+
+
 
