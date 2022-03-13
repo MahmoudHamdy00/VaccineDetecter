@@ -10,7 +10,8 @@ namespace VaccineDetecter_Backend.Services
         public SavingDataService(ApplicationDbContext applicationDbContext) {
             _applicationDbContext = applicationDbContext;
         }
-        public async Task<bool> SaveData(DataDTO data) {
+        public async Task<Response> SaveData(DataDTO data) {
+            var ret = new Response();
             try {
                 var person = new Person() {
                     NationalId = data.person.NationalId,
@@ -20,34 +21,45 @@ namespace VaccineDetecter_Backend.Services
                     Email = data.person.Email,
                     MobileNumber = data.person.MobileNumber,
                 };
-                var nationalId = await AddPerson(person);
-
+                var AddPersonResult = await AddPerson(person);
+                if (!AddPersonResult.Succeeded) {
+                    ret.Succeeded = false;
+                    ret.Errors = AddPersonResult.Errors;
+                    return ret;
+                }
+                var PersonNationalId = AddPersonResult.Data.ToString() ;
                 var test = new MedicalTest() {
                     WhiteBloodCell = data.Test.WhiteBloodCell,
                     RedBloodCell = data.Test.RedBloodCell,
                     TestDate = data.Test.TestDate,
-                    PersonId = person.NationalId
+                    PersonId = PersonNationalId
                 };
                 await _applicationDbContext.Tests.AddAsync(test);
                 await _applicationDbContext.SaveChangesAsync();
+                return ret;
             }
             catch (Exception ex) {
-                return false;
+                ret.Succeeded = false;
+                ret.Errors.Add(new Error() { Code = ex.Message, Description = ex.InnerException.Message });
+                return ret;
             }
-            return true;
         }
-        public async Task<string> AddPerson(Person person) {
+        public async Task<Response> AddPerson(Person person) {
+            var ret = new Response();
             try {
                 var res = await _applicationDbContext.Persons.FindAsync(person.NationalId);
                 if (res == null) {
                     await _applicationDbContext.Persons.AddAsync(person);
                     await _applicationDbContext.SaveChangesAsync();
-                    return person.NationalId;
+                    ret.Data = person.NationalId;
                 }
-                return res.NationalId;
+                ret.Data = res.NationalId;
+                return ret;
             }
             catch (Exception ex) {
-                return "-1";
+                ret.Succeeded = false;
+                ret.Errors.Add(new Error() { Code = ex.Message, Description = ex.InnerException.Message });
+                return ret;
             }
         }
     }
