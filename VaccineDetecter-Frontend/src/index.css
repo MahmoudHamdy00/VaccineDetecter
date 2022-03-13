@@ -30,11 +30,13 @@ img.sticky {
   position: sticky;
   margin-left: auto;
  display: block;
-
+ background-color: #bf09c5;
+ background-size: auto;
+ border-image: repeat;
   top: 700px;
   z-index: 1;
-  width: 200px;
-  height: 200px;
+  width: 160px;
+  height: 135px;
 }
 input[type=text] {
   width: 200px;
